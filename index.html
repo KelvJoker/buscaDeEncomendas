@@ -90,6 +90,45 @@
         background-color: #f8d7da; 
         color: red;
       }
+      
+      /* 🔁 Responsividade para dispositivos menores */
+      @media (max-width: 600px) {
+        main {
+          padding: 20px;
+          margin: 15px;
+        }
+
+        table, thead, tbody, th, td, tr {
+          display: block;
+          width: 100%;
+        }
+
+        thead {
+          display: none;
+        }
+
+        tr {
+          margin-bottom: 15px;
+          background-color: #fff;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+          border-radius: 5px;
+          padding: 10px;
+        }
+
+        td {
+          background-color: transparent;
+          border: none;
+          padding: 5px 10px;
+          position: relative;
+        }
+
+        td::before {
+          content: attr(data-label);
+          font-weight: bold;
+          display: block;
+          color: #555;
+        }
+      }
     </style>
   </head>
   <body>
