@@ -79,14 +79,13 @@
         text-align: center;
       }
 
-      /* Status colorido apenas na célula */
       td.status-cell.entregue {
         background-color: #d4edda;
         color: green;
         font-weight: bold;
       }
 
-      td.status-cell.pendente {
+      td.status-cell.noscorreios {
         background-color: #f0f0f0;
         color: gray;
         font-weight: bold;
@@ -98,7 +97,6 @@
         font-weight: bold;
       }
 
-      /* Responsividade para dispositivos menores */
       @media (max-width: 600px) {
         main {
           padding: 20px;
@@ -135,9 +133,8 @@
           color: #555;
         }
 
-        /* Mantém a cor do status mesmo em celular */
         td.status-cell.entregue,
-        td.status-cell.pendente,
+        td.status-cell.noscorreios,
         td.status-cell.volto {
           border-radius: 5px;
           margin-top: 5px;
@@ -186,13 +183,14 @@
 
         let html = "<table><thead><tr><th>Nome</th><th>Data</th><th>Status</th></tr></thead><tbody>";
         dados.forEach(item => {
-          const statusClass = getStatusClass(item.status);
+          const status = substituirStatus(item.status);
+          const statusClass = getStatusClass(status);
           const formattedDate = formatarData(item.data);
 
           html += `<tr>
             <td data-label="Nome">${item.nome}</td>
             <td data-label="Data">${formattedDate}</td>
-            <td data-label="Status" class="status-cell ${statusClass}">${item.status}</td>
+            <td data-label="Status" class="status-cell ${statusClass}">${status}</td>
           </tr>`;
         });
         html += "</tbody></table>";
@@ -207,10 +205,15 @@
         return `${dia}/${mes}/${ano}`;
       }
 
+      function substituirStatus(status) {
+        if (status.toLowerCase().includes("pendente")) return "Nos Correios";
+        return status;
+      }
+
       function getStatusClass(status) {
         const statusLower = status.toLowerCase();
         if (statusLower.includes("entregue")) return 'entregue';
-        if (statusLower.includes("pendente")) return 'pendente';
+        if (statusLower.includes("nos correios")) return 'noscorreios';
         if (statusLower.includes("volto") || statusLower.includes("voltou")) return 'volto';
         return '';
       }
