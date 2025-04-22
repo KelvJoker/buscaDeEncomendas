@@ -72,10 +72,6 @@
         color: white;
       }
 
-      td {
-        background-color: #f9f9f9;
-      }
-
       .no-results {
         color: red;
         font-weight: bold;
@@ -83,22 +79,26 @@
         text-align: center;
       }
 
-      .entregue {
+      /* Status colorido apenas na célula */
+      td.status-cell.entregue {
         background-color: #d4edda;
         color: green;
+        font-weight: bold;
       }
 
-      .pendente {
+      td.status-cell.pendente {
         background-color: #f0f0f0;
         color: gray;
+        font-weight: bold;
       }
 
-      .volto {
+      td.status-cell.volto {
         background-color: #f8d7da;
         color: red;
+        font-weight: bold;
       }
 
-      /* 🔁 Responsividade para dispositivos menores */
+      /* Responsividade para dispositivos menores */
       @media (max-width: 600px) {
         main {
           padding: 20px;
@@ -116,14 +116,13 @@
 
         tr {
           margin-bottom: 15px;
-          background-color: #fff;
           box-shadow: 0 2px 5px rgba(0,0,0,0.05);
           border-radius: 5px;
           padding: 10px;
         }
 
         td {
-          background-color: transparent;
+          background-color: transparent !important;
           border: none;
           padding: 5px 10px;
           position: relative;
@@ -134,6 +133,14 @@
           font-weight: bold;
           display: block;
           color: #555;
+        }
+
+        /* Mantém a cor do status mesmo em celular */
+        td.status-cell.entregue,
+        td.status-cell.pendente,
+        td.status-cell.volto {
+          border-radius: 5px;
+          margin-top: 5px;
         }
       }
     </style>
@@ -185,7 +192,7 @@
           html += `<tr>
             <td data-label="Nome">${item.nome}</td>
             <td data-label="Data">${formattedDate}</td>
-            <td data-label="Status" class="${statusClass}">${item.status}</td>
+            <td data-label="Status" class="status-cell ${statusClass}">${item.status}</td>
           </tr>`;
         });
         html += "</tbody></table>";
