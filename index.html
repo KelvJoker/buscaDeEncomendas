@@ -2,6 +2,7 @@
 <html>
   <head>
     <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       body {
         font-family: 'Segoe UI', sans-serif;
@@ -19,6 +20,7 @@
 
       h2 {
         margin: 0;
+        font-size: 1.5em;
       }
 
       main {
@@ -37,6 +39,7 @@
         margin-top: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
+        box-sizing: border-box;
       }
 
       button {
@@ -57,15 +60,19 @@
         border-collapse: collapse;
       }
 
+      th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+        font-size: 14px;
+      }
+
       th {
         background-color: #002776;
         color: white;
-        padding: 10px;
       }
 
       td {
-        border: 1px solid #ccc;
-        padding: 10px;
         background-color: #f9f9f9;
       }
 
@@ -82,15 +89,15 @@
       }
 
       .pendente {
-        background-color: #f0f0f0; 
+        background-color: #f0f0f0;
         color: gray;
       }
 
       .volto {
-        background-color: #f8d7da; 
+        background-color: #f8d7da;
         color: red;
       }
-      
+
       /* 🔁 Responsividade para dispositivos menores */
       @media (max-width: 600px) {
         main {
@@ -170,42 +177,34 @@
           return;
         }
 
-        let html = "<table><tr><th>Nome</th><th>Data</th><th>Status</th></tr>";
+        let html = "<table><thead><tr><th>Nome</th><th>Data</th><th>Status</th></tr></thead><tbody>";
         dados.forEach(item => {
           const statusClass = getStatusClass(item.status);
           const formattedDate = formatarData(item.data);
 
           html += `<tr>
-                      <td>${item.nome}</td>
-                      <td>${formattedDate}</td>
-                      <td class="${statusClass}">${item.status}</td>
-                    </tr>`;
+            <td data-label="Nome">${item.nome}</td>
+            <td data-label="Data">${formattedDate}</td>
+            <td data-label="Status" class="${statusClass}">${item.status}</td>
+          </tr>`;
         });
-        html += "</table>";
+        html += "</tbody></table>";
         div.innerHTML = html;
       }
 
       function formatarData(data) {
         const dateObj = new Date(data);
-
         const dia = String(dateObj.getDate()).padStart(2, '0');
         const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
         const ano = String(dateObj.getFullYear()).slice(-2);
-
         return `${dia}/${mes}/${ano}`;
       }
 
       function getStatusClass(status) {
-
         const statusLower = status.toLowerCase();
-        
-        if (statusLower.includes("entregue")) {
-          return 'entregue';
-        } else if (statusLower.includes("pendente")) {
-          return 'pendente';
-        } else if (statusLower.includes("volto") || statusLower.includes("voltou")) {
-          return 'volto';
-        }
+        if (statusLower.includes("entregue")) return 'entregue';
+        if (statusLower.includes("pendente")) return 'pendente';
+        if (statusLower.includes("volto") || statusLower.includes("voltou")) return 'volto';
         return '';
       }
     </script>
