@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #002776;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      h2 {
+        margin: 0;
+      }
+
+      main {
+        background-color: white;
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+
+      input, button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        background-color: #ffcc00;
+        color: #002776;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #e6b800;
+      }
+
+      table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+      }
+
+      th {
+        background-color: #002776;
+        color: white;
+        padding: 10px;
+      }
+
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #f9f9f9;
+      }
+
+      .no-results {
+        color: red;
+        font-weight: bold;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .entregue {
+        background-color: #d4edda;
+        color: green;
+      }
+
+      .pendente {
+        background-color: #f0f0f0; 
+        color: gray;
+      }
+
+      .volto {
+        background-color: #f8d7da; 
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h2>📦 Consulta de Encomendas</h2>
+    </header>
+
+    <main>
+      <label for="nome"><strong>Digite seu nome completo ou parte dele:</strong></label>
+      <input type="text" id="nome" placeholder="Ex: Kelvin Kauê">
+      <button onclick="buscar()">Buscar Encomendas</button>
+
+      <div id="resultado"></div>
+    </main>
+
+    <script>
+      const API_URL = "https://script.google.com/macros/s/AKfycbwke2O_yZ48dfK7hqpSQO33ZaRxav2fVXtKDP8S0Sl36GE6QxlZpvIelp1EOf-xxOU_/exec";
+
+      function buscar() {
+        const nome = document.getElementById('nome').value.trim();
+        if (!nome) {
+          alert("Por favor, digite um nome para buscar.");
+          return;
+        }
+
+        fetch(`${API_URL}?nome=${encodeURIComponent(nome)}`)
+          .then(response => response.json())
+          .then(dados => mostrarResultado(dados))
+          .catch(error => {
+            console.error('Erro:', error);
+            document.getElementById('resultado').innerHTML = "<p class='no-results'>Erro ao buscar dados.</p>";
+          });
+      }
+
+      function mostrarResultado(dados) {
+        const div = document.getElementById('resultado');
+        if (!dados || dados.length === 0) {
+          div.innerHTML = `<p class="no-results">Nenhuma encomenda encontrada com esse nome.</p>`;
+          return;
+        }
+
+        let html = "<table><tr><th>Nome</th><th>Data</th><th>Status</th></tr>";
+        dados.forEach(item => {
+          const statusClass = getStatusClass(item.status);
+          const formattedDate = formatarData(item.data);
+
+          html += `<tr>
+                      <td>${item.nome}</td>
+                      <td>${formattedDate}</td>
+                      <td class="${statusClass}">${item.status}</td>
+                    </tr>`;
+        });
+        html += "</table>";
+        div.innerHTML = html;
+      }
+
+      function formatarData(data) {
+        const dateObj = new Date(data);
+
+        const dia = String(dateObj.getDate()).padStart(2, '0');
+        const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const ano = String(dateObj.getFullYear()).slice(-2);
+
+        return `${dia}/${mes}/${ano}`;
+      }
+
+      function getStatusClass(status) {
+
+        const statusLower = status.toLowerCase();
+        
+        if (statusLower.includes("entregue")) {
+          return 'entregue';
+        } else if (statusLower.includes("pendente")) {
+          return 'pendente';
+        } else if (statusLower.includes("volto") || statusLower.includes("voltou")) {
+          return 'volto';
+        }
+        return '';
+      }
+    </script>
+  </body>
+</html>
