@@ -18,9 +18,23 @@
         text-align: center;
       }
 
+      h1 {
+        margin: 0;
+        font-size: 1.5em;
+      }
+
+      .destaque {
+        color:red;
+      }
+
+      .destaqueC {
+        color: blue;
+      }
+
       h2 {
         margin: 0;
         font-size: 1.5em;
+        text-align: center;
       }
 
       main {
@@ -149,10 +163,22 @@
 
     <main>
       <label for="nome"><strong>Digite seu nome completo ou parte dele:</strong></label>
-      <input type="text" id="nome" placeholder="Ex: Kelvin Kauê">
+      <input type="text" id="nome" placeholder="Ex: Seu Nome">
       <button onclick="buscar()">Buscar Encomendas</button>
 
       <div id="resultado"></div>
+    </main>
+
+    <main>
+      <h2> 
+        <span class="destaque">Aviso Importante! </span> 
+      </h2>
+      <br>
+      <h1>
+        Todas as encomendas marcadas como <span class="destaqueC">“Nos Correios”</span> indicam que já se encontram disponíveis na agência do Rio da Barra. <br>
+        Caso sua encomenda não esteja disponivel, significa que ainda não chegou à nossa agência e pode estar na unidade principal, em Sertânia. <br> <br>
+        
+        Agradecemos a compreensão.</h1>
     </main>
 
     <script>
@@ -219,4 +245,9 @@
       }
     </script>
   </body>
+  <footer>
+    <header>
+      <h2>Endereço da agência: Rua - Jose Valerio, em frente ao posto de saúde, Rio da Barra. - Contato: (87) 9 8155-3826</h2>
+    </header>
+  </footer>
 </html>
