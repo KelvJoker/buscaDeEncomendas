@@ -5,7 +5,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwke2O_yZ48dfK7hqpSQO33
 function buscar() {
   const nome = document.getElementById('nome').value.trim();
   if (!nome || nome.length < 3) {
-    alert("Por favor, digite um nome para buscar.");
+    document.getElementById('resultado').innerHTML = "<p class='no-results'>Por favor, digite ao menos 3 caracteres.</p>";
     return;
   }
 
