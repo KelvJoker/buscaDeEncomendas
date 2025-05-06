@@ -20,19 +20,29 @@ function buscar() {
 
 function mostrarResultado(dados) {
   const div = document.getElementById('resultado');
+  const nomeBusca = document.getElementById('nome').value.trim().toLowerCase();
 
-  if (!dados || !Array.isArray(dados)) {
+  // Verifique se os dados são válidos
+  if (!dados || !Array.isArray(dados) || dados.length === 0) {
     div.innerHTML = `<p class="no-results">Nenhuma encomenda encontrada com esse nome.</p>`;
     return;
   }
 
-  if (dados.length === 0) {
+  // Filtra os dados para que apenas os nomes que comecem com o texto digitado sejam exibidos
+  const resultadosFiltrados = dados.filter(item => 
+    item.nome.toLowerCase().startsWith(nomeBusca) // Verifica se o nome começa com o termo de busca
+  );
+
+  // Verifica se há resultados após o filtro
+  if (resultadosFiltrados.length === 0) {
     div.innerHTML = `<p class="no-results">Nenhuma encomenda encontrada com esse nome.</p>`;
     return;
   }
 
+
+  // Geração do HTML com os resultados filtrados
   let html = "<table><thead><tr><th>Nome</th><th>Data</th><th>Status</th></tr></thead><tbody>";
-  dados.forEach(item => {
+  resultadosFiltrados.forEach(item => {
     const status = substituirStatus(item.status);
     const statusClass = getStatusClass(status);
     const formattedDate = formatarData(item.data);
@@ -46,6 +56,7 @@ function mostrarResultado(dados) {
   html += "</tbody></table>";
   div.innerHTML = html;
 }
+
 
 function formatarData(data) {
   const dateObj = new Date(data);
@@ -67,3 +78,10 @@ function getStatusClass(status) {
   if (statusLower.includes("volto") || statusLower.includes("voltou")) return 'volto';
   return '';
 }
+
+document.getElementById("nome").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault(); // Impede o comportamento padrão (ex: enviar formulário)
+    buscar(); // Chama a função de busca
+  }
+});

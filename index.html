@@ -10,7 +10,7 @@
     </header>
 
     <main>
-      <label for="nome"><strong>Digite seu nome completo ou parte dele:</strong></label>
+      <label for="nome"><strong>Digite seu nome completo ou parte dele: (mínimo 3 caracteres.)</strong></label>
       <input type="text" id="nome" placeholder="Ex: Seu Nome" minlength="3">
       <button id="buscar-button">Buscar Encomendas</button>
       <link rel="stylesheet" href="style.css">
@@ -31,9 +31,14 @@
     </main>
     <script src="script.js"></script>
   </body>
-  <footer>
-    <header>
-      <h1>Endereço da agência: Rua - Jose Valerio, em frente ao posto de saúde, Rio da Barra. - Contato: (87) 9 8155-3826</h1>
-    </header>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>
+        Endereço da agência: Rua José Valério, em frente ao posto de saúde, Rio da Barra. 
+        <a href="https://wa.me/5587981553826" target="_blank">
+          - (87) 9 8155-3826 <img src="/icons/whats_icon.png" class="whatsapp-icon" alt="Zap">
+        </a>
+      </p>
+    </div>
   </footer>
 </html>
