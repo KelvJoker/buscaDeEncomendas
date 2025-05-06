@@ -3,158 +3,6 @@
   <head>
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-      body {
-        font-family: 'Segoe UI', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-      }
-
-      header {
-        background-color: #002776;
-        color: white;
-        padding: 20px;
-        text-align: center;
-      }
-
-      h1 {
-        margin: 0;
-        font-size: 1.5em;
-      }
-
-      .destaque {
-        color:red;
-      }
-
-      .destaqueC {
-        color: blue;
-      }
-
-      h2 {
-        margin: 0;
-        font-size: 1.5em;
-        text-align: center;
-      }
-
-      main {
-        background-color: white;
-        max-width: 600px;
-        margin: 30px auto;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      }
-
-      input, button {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        margin-top: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-      }
-
-      button {
-        background-color: #ffcc00;
-        color: #002776;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #e6b800;
-      }
-
-      table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-      }
-
-      th, td {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: left;
-        font-size: 14px;
-      }
-
-      th {
-        background-color: #002776;
-        color: white;
-      }
-
-      .no-results {
-        color: red;
-        font-weight: bold;
-        margin-top: 20px;
-        text-align: center;
-      }
-
-      td.status-cell.entregue {
-        background-color: #d4edda;
-        color: green;
-        font-weight: bold;
-      }
-
-      td.status-cell.noscorreios {
-        background-color: #f0f0f0;
-        color: gray;
-        font-weight: bold;
-      }
-
-      td.status-cell.volto {
-        background-color: #f8d7da;
-        color: red;
-        font-weight: bold;
-      }
-
-      @media (max-width: 600px) {
-        main {
-          padding: 20px;
-          margin: 15px;
-        }
-
-        table, thead, tbody, th, td, tr {
-          display: block;
-          width: 100%;
-        }
-
-        thead {
-          display: none;
-        }
-
-        tr {
-          margin-bottom: 15px;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-          border-radius: 5px;
-          padding: 10px;
-        }
-
-        td {
-          background-color: transparent !important;
-          border: none;
-          padding: 5px 10px;
-          position: relative;
-        }
-
-        td::before {
-          content: attr(data-label);
-          font-weight: bold;
-          display: block;
-          color: #555;
-        }
-
-        td.status-cell.entregue,
-        td.status-cell.noscorreios,
-        td.status-cell.volto {
-          border-radius: 5px;
-          margin-top: 5px;
-        }
-      }
-    </style>
   </head>
   <body>
     <header>
@@ -163,8 +11,9 @@
 
     <main>
       <label for="nome"><strong>Digite seu nome completo ou parte dele:</strong></label>
-      <input type="text" id="nome" placeholder="Ex: Seu Nome">
-      <button onclick="buscar()">Buscar Encomendas</button>
+      <input type="text" id="nome" placeholder="Ex: Seu Nome" minlength="2">
+      <button id="buscar-button">Buscar Encomendas</button>
+      <link rel="stylesheet" href="style.css">
 
       <div id="resultado"></div>
     </main>
@@ -180,70 +29,7 @@
         
         Agradecemos a compreensão.</h1>
     </main>
-
-    <script>
-      const API_URL = "https://script.google.com/macros/s/AKfycbwke2O_yZ48dfK7hqpSQO33ZaRxav2fVXtKDP8S0Sl36GE6QxlZpvIelp1EOf-xxOU_/exec";
-
-      function buscar() {
-        const nome = document.getElementById('nome').value.trim();
-        if (!nome) {
-          alert("Por favor, digite um nome para buscar.");
-          return;
-        }
-
-        fetch(`${API_URL}?nome=${encodeURIComponent(nome)}`)
-          .then(response => response.json())
-          .then(dados => mostrarResultado(dados))
-          .catch(error => {
-            console.error('Erro:', error);
-            document.getElementById('resultado').innerHTML = "<p class='no-results'>Erro ao buscar dados.</p>";
-          });
-      }
-
-      function mostrarResultado(dados) {
-        const div = document.getElementById('resultado');
-        if (!dados || dados.length === 0) {
-          div.innerHTML = `<p class="no-results">Nenhuma encomenda encontrada com esse nome.</p>`;
-          return;
-        }
-
-        let html = "<table><thead><tr><th>Nome</th><th>Data</th><th>Status</th></tr></thead><tbody>";
-        dados.forEach(item => {
-          const status = substituirStatus(item.status);
-          const statusClass = getStatusClass(status);
-          const formattedDate = formatarData(item.data);
-
-          html += `<tr>
-            <td data-label="Nome">${item.nome}</td>
-            <td data-label="Data">${formattedDate}</td>
-            <td data-label="Status" class="status-cell ${statusClass}">${status}</td>
-          </tr>`;
-        });
-        html += "</tbody></table>";
-        div.innerHTML = html;
-      }
-
-      function formatarData(data) {
-        const dateObj = new Date(data);
-        const dia = String(dateObj.getDate()).padStart(2, '0');
-        const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
-        const ano = String(dateObj.getFullYear()).slice(-2);
-        return `${dia}/${mes}/${ano}`;
-      }
-
-      function substituirStatus(status) {
-        if (status.toLowerCase().includes("pendente")) return "Nos Correios";
-        return status;
-      }
-
-      function getStatusClass(status) {
-        const statusLower = status.toLowerCase();
-        if (statusLower.includes("entregue")) return 'entregue';
-        if (statusLower.includes("nos correios")) return 'noscorreios';
-        if (statusLower.includes("volto") || statusLower.includes("voltou")) return 'volto';
-        return '';
-      }
-    </script>
+    <script src="script.js"></script>
   </body>
   <footer>
     <header>

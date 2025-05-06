@@ -1,0 +1,150 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    background-color: #002776;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.5em;
+  }
+
+  .destaque {
+    color:red;
+  }
+
+  .destaqueC {
+    color: blue;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  main {
+    background-color: white;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  input, button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  button {
+    background-color: #ffcc00;
+    color: #002776;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #e6b800;
+  }
+
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  th {
+    background-color: #002776;
+    color: white;
+  }
+
+  .no-results {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  td.status-cell.entregue {
+    background-color: #d4edda;
+    color: green;
+    font-weight: bold;
+  }
+
+  td.status-cell.noscorreios {
+    background-color: #f0f0f0;
+    color: gray;
+    font-weight: bold;
+  }
+
+  td.status-cell.volto {
+    background-color: #f8d7da;
+    color: red;
+    font-weight: bold;
+  }
+
+  @media (max-width: 600px) {
+    main {
+      padding: 20px;
+      margin: 15px;
+    }
+
+    table, thead, tbody, th, td, tr {
+      display: block;
+      width: 100%;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    td {
+      background-color: transparent !important;
+      border: none;
+      padding: 5px 10px;
+      position: relative;
+    }
+
+    td::before {
+      content: attr(data-label);
+      font-weight: bold;
+      display: block;
+      color: #555;
+    }
+
+    td.status-cell.entregue,
+    td.status-cell.noscorreios,
+    td.status-cell.volto {
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+  }
