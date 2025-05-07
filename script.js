@@ -4,8 +4,15 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwke2O_yZ48dfK7hqpSQO33
 
 function buscar() {
   const nome = document.getElementById('nome').value.trim();
+
   if (!nome || nome.length < 3) {
-    document.getElementById('resultado').innerHTML = "<p class='no-results'>Por favor, digite ao menos 3 caracteres.</p>";
+    document.getElementById('resultado').innerHTML = "<p class='no-results'>Por favor, digite ao menos 3 letras.</p>";
+    return;
+  }
+
+  const apenasLetrasRegex = /^[A-Za-zÀ-ÿ\s]+$/;
+  if (!apenasLetrasRegex.test(nome)) {
+    document.getElementById('resultado').innerHTML = "<p class='no-results'>Use apenas letras. Números e símbolos não são permitidos.</p>";
     return;
   }
 
@@ -22,25 +29,21 @@ function mostrarResultado(dados) {
   const div = document.getElementById('resultado');
   const nomeBusca = document.getElementById('nome').value.trim().toLowerCase();
 
-  // Verifique se os dados são válidos
   if (!dados || !Array.isArray(dados) || dados.length === 0) {
     div.innerHTML = `<p class="no-results">Nenhuma encomenda encontrada com esse nome.</p>`;
     return;
   }
 
-  // Filtra os dados para que apenas os nomes que comecem com o texto digitado sejam exibidos
   const resultadosFiltrados = dados.filter(item => 
-    item.nome.toLowerCase().startsWith(nomeBusca) // Verifica se o nome começa com o termo de busca
+    item.nome.toLowerCase().startsWith(nomeBusca) 
   );
 
-  // Verifica se há resultados após o filtro
   if (resultadosFiltrados.length === 0) {
     div.innerHTML = `<p class="no-results">Nenhuma encomenda encontrada com esse nome.</p>`;
     return;
   }
 
 
-  // Geração do HTML com os resultados filtrados
   let html = "<table><thead><tr><th>Nome</th><th>Data</th><th>Status</th></tr></thead><tbody>";
   resultadosFiltrados.forEach(item => {
     const status = substituirStatus(item.status);
@@ -81,7 +84,7 @@ function getStatusClass(status) {
 
 document.getElementById("nome").addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
-    event.preventDefault(); // Impede o comportamento padrão (ex: enviar formulário)
-    buscar(); // Chama a função de busca
+    event.preventDefault(); 
+    buscar();
   }
 });
